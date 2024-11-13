@@ -2,9 +2,11 @@ import { useState } from "react";
 import Button from "../components/Botton";
 import { LoginRequest } from "../services/auth/LoginRequest";
 import { login } from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage(){
 
+	const navigate = useNavigate();
 	const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -14,6 +16,8 @@ export default function LoginPage(){
 			password: password
 		}
 		await login(loginInfo);
+		navigate("/home");
+
 	}
 
 
@@ -21,8 +25,8 @@ export default function LoginPage(){
 		<main className="min-h-screen flex items-center justify-center">
 			<section className="flex flex-col items-center p-6 bg-blue-400 rounded-lg shadow-lg">
 			<section className="flex justify-center mb-6">
-				<Button message="Iniciar Sesión" to={"/login"}/>
-				<Button message="Registrarse" to={"/register"} />
+				<Button message="Iniciar Sesión" to={"/auth/login"}/>
+				<Button message="Registrarse" to={"/auth/register"} />
 			</section>
 
 			<article className="login-section flex flex-col items-center text-center">
