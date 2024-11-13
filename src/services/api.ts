@@ -4,8 +4,6 @@ import { RegisterRequest } from "./auth/RegisterRequest";
 import { LoginRequest } from "./auth/LoginRequest";
 const BACKEND_URL = "http://localhost:8080";
 
-console.log(BACKEND_URL)
-
 export const getRole = () => {
     const token = localStorage.getItem('token');
     if(token !== null){
@@ -46,7 +44,8 @@ export const login = async (data : LoginRequest)=>{
         
             }
             catch(error){
-                console.log(error);
+                alert('Inicio de sesion fallido')
+                console.log('Login failed', error);
                 throw error;
             }
 }

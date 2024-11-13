@@ -2,6 +2,7 @@ import { useState } from "react";
 import Button from "../components/Botton";
 import { RegisterRequest } from "../services/auth/RegisterRequest";
 import { signUp } from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 
 export function RegisterPage(){
@@ -12,6 +13,9 @@ export function RegisterPage(){
     const [phone, setPhone] = useState("");
     const [date, setDate] = useState("");
     const [category, setCategory] = useState("CLIENTE");
+
+    const navigate = useNavigate();
+	const [successMessage, setSuccessMessage] = useState("");
 
 
     const handleClick: any = async () =>{
@@ -24,13 +28,16 @@ export function RegisterPage(){
             category: category,
         }
         await signUp(registroInfo);
+        console.log("Registro exitoso");
+        setSuccessMessage("Registro exitoso. Redirigiendo al inicio de sesión...");
+        setTimeout(() => navigate("/auth/login"), 2000);
     }
 
     return(
         <main className="min-h-screen justify-center bg-amber-400 rounded-lg">
 			<section className="flex justify-center mb-11">
-				<Button message="Iniciar Sesión" to={"/login"}/>
-				<Button message="Registrarse" to={"/register"} />
+				<Button message="Iniciar Sesión" to={"/auth/login"}/>
+				<Button message="Registrarse" to={"/auth/register"} />
 			</section>
 
             <article className="flex justify-between">
@@ -84,6 +91,7 @@ export function RegisterPage(){
                     </div>
                     </form>
                     <button onClick={handleClick}>Registrarme</button>
+                    {successMessage && (<div className="text-green-700 text-sm text-center mt-4 bg-green-100 p-2 rounded-md w-4/5 mx-auto">	{successMessage}</div>)}
                 </section>
             </article>
         </main>
