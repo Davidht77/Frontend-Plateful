@@ -1,6 +1,8 @@
 import axios from "axios";
 import { jwtDecode } from 'jwt-decode';
-const BACKEND_URL: string = "https://localhost:8080";
+import { RegisterRequest } from "./auth/RegisterRequest";
+import { LoginRequest } from "./auth/LoginRequest";
+const BACKEND_URL = "http://localhost:8080";
 
 console.log(BACKEND_URL)
 
@@ -20,5 +22,31 @@ try {
         console.error(error);
 }
 }
-        
 
+export const signUp = async(data: RegisterRequest)=> {
+        try{
+                const response = await axios.post(BACKEND_URL+'/auth/register', data);
+                const token = response.data.token;
+                console.log(response);
+                localStorage.setItem('token', token);
+                return token;
+        }
+        catch(error){
+                console.error(error);
+        }
+}
+
+export const login = async (data : LoginRequest)=>{
+        try{
+                const response = await axios.post(BACKEND_URL+'/auth/login', data)
+                const token = response.data.token;
+                localStorage.setItem('token', token);
+                console.log(token);
+                return response;
+        
+            }
+            catch(error){
+                console.log(error);
+                throw error;
+            }
+}
