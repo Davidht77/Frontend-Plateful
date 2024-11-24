@@ -1,99 +1,188 @@
 import { useState } from "react";
-import Button from "../components/Botton";
 import { RegisterRequest } from "../services/auth/RegisterRequest";
 import { signUp } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
+export function RegisterPage() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [date, setDate] = useState("");
+  const [category, setCategory] = useState("CLIENTE");
+  const [successMessage, setSuccessMessage] = useState("");
 
-export function RegisterPage(){
+  const navigate = useNavigate();
 
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [phone, setPhone] = useState("");
-    const [date, setDate] = useState("");
-    const [category, setCategory] = useState("CLIENTE");
+  const handleClick = async () => {
+    const registroInfo: RegisterRequest = {
+      name: name,
+      email: email,
+      password: password,
+      phone: phone,
+      date: date,
+      category: category,
+    };
+    await signUp(registroInfo);
+    console.log("Registro exitoso");
+    setSuccessMessage("Registro exitoso. Redirigiendo al inicio de sesión...");
+    setTimeout(() => navigate("/auth/login"), 2000);
+  };
 
-    const navigate = useNavigate();
-	const [successMessage, setSuccessMessage] = useState("");
+  return (
+    <div className="flex flex-col items-center justify-center h-screen w-screen bg-gray-100">
+      {/* Título */}
+      <h1 className="text-xl md:text-2xl font-serif italic text-center text-gray-700 mb-6">
+        ¡Empieza tu experiencia con Plateful!
+      </h1>
 
+      {/* Formulario de Registro */}
+      <div className="bg-white p-8 rounded shadow-lg w-11/12 md:w-96">
+        <h2 className="text-2xl text-gray-700 mb-6 text-center font-semibold">
+          Registro
+        </h2>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleClick();
+          }}
+        >
+          <div className="mb-4">
+            <label
+              htmlFor="name"
+              className="block text-gray-700 font-medium mb-2"
+            >
+              Nombre
+            </label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="John"
+            />
+          </div>
 
-    const handleClick: any = async () =>{
-        const registroInfo: RegisterRequest={
-            name: name,
-            email: email,
-            password: password,
-            phone: phone,
-            date: date,
-            category: category,
-        }
-        await signUp(registroInfo);
-        console.log("Registro exitoso");
-        setSuccessMessage("Registro exitoso. Redirigiendo al inicio de sesión...");
-        setTimeout(() => navigate("/auth/login"), 2000);
-    }
+          <div className="mb-4">
+            <label
+              htmlFor="email"
+              className="block text-gray-700 font-medium mb-2"
+            >
+              Correo Electrónico
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="example@gmail.com"
+            />
+          </div>
 
-    return(
-        <main className="min-h-screen justify-center bg-amber-400 rounded-lg">
-			<section className="flex justify-center mb-11">
-				<Button message="Iniciar Sesión" to={"/auth/login"}/>
-				<Button message="Registrarse" to={"/auth/register"} />
-			</section>
+          <div className="mb-4">
+            <label
+              htmlFor="password"
+              className="block text-gray-700 font-medium mb-2"
+            >
+              Contraseña
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="**********"
+            />
+          </div>
 
-            <article className="flex justify-between">
-                <section className="login-section flex flex-col items-center p-4 text-center">
-                    <h1 className="text-4xl text-white mb-2">Registro</h1>
-                    <p className="text-white mb-1">Regístrate como cliente o propietario para empezar con Plateful</p>
-                    <form className="flex flex-col items-center mb-4">
-                        <label className="text-white mb-1">Nombre</label>
-                        <input 
-                            placeholder="John"
-                            onChange={(e) => setName(e.target.value)}
-                            className="p-2 rounded mb-4"></input>
-                        <label className="text-white mb-1">Correo</label>
-                        <input 
-                            placeholder="example@gmail.com"
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="p-2 rounded mb-4"></input>
-                        <label className="text-white mb-1">Contraseña</label>
-                        <input 
-                            placeholder="**********"
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="p-2 rounded mb-4"></input>
-                        <label className="text-white mb-1">Telefono</label>
-                        <input 
-                            placeholder="987 654 321"
-                            onChange={(e) => setPhone(e.target.value)}
-                            className="p-2 rounded mb-4"></input>
-                        <div className="flex flex-col items-start mb-4">
-                            <label htmlFor="dateOfBirth" className="mb-2 text-gray-700 font-medium">
-                                Fecha de Nacimiento
-                            </label>
-                            <input
-                                type="date"
-                                id="dateOfBirth"
-                                name="dateOfBirth"
-                                value={date}
-                                onChange={(e)=>setDate(e.target.value)}
-                                className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
-                        <label className="text-white mb-5">Categoria</label>
-                    <div className="flex items-center space-x-4">
-                        <input 
-                            type="radio" id="cliente" name="category" value="Cliente"
-                            checked= {category == "CLIENTE"} onChange={(e)=>setCategory(e.target.value)} ></input>
-                        <label htmlFor="cliente">Cliente</label>
-                        <input 
-                            type="radio" id="propietario" name="category" value="Propietario"
-                            checked= {category == "CLIENTE"} onChange={(e)=>setCategory(e.target.value)} ></input>
-                        <label htmlFor="propietario">Propietario</label>
-                    </div>
-                    </form>
-                    <button onClick={handleClick}>Registrarme</button>
-                    {successMessage && (<div className="text-green-700 text-sm text-center mt-4 bg-green-100 p-2 rounded-md w-4/5 mx-auto">	{successMessage}</div>)}
-                </section>
-            </article>
-        </main>
-    );
+          <div className="mb-4">
+            <label
+              htmlFor="phone"
+              className="block text-gray-700 font-medium mb-2"
+            >
+              Teléfono
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="987 654 321"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="dateOfBirth"
+              className="block text-gray-700 font-medium mb-2"
+            >
+              Fecha de Nacimiento
+            </label>
+            <input
+              type="date"
+              id="dateOfBirth"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div className="mb-6">
+  <span className="block text-gray-700 font-medium mb-2">
+    Categoría
+  </span>
+  <div className="flex items-center space-x-4">
+    <label className="flex items-center text-gray-700">
+      <input
+        type="radio"
+        value="CLIENTE"
+        checked={category === "CLIENTE"}
+        onChange={(e) => setCategory(e.target.value)}
+        className="mr-2"
+      />
+      Cliente
+    </label>
+    <label className="flex items-center text-gray-700">
+      <input
+        type="radio"
+        value="RESTAURANTE"
+        checked={category === "RESTAURANTE"}
+        onChange={(e) => setCategory(e.target.value)}
+        className="mr-2"
+      />
+      Restaurante
+    </label>
+  </div>
+</div>
+
+          <button
+            type="submit"
+            className="w-full bg-black text-white py-2 px-4 rounded hover:bg-gray-800 transition"
+          >
+            Registrarme
+          </button>
+        </form>
+
+        {successMessage && (
+          <div className="text-green-700 text-sm text-center mt-4 bg-green-100 p-2 rounded-md w-full">
+            {successMessage}
+          </div>
+        )}
+
+        {/* Enlace para volver al login */}
+        <div className="mt-4 text-center">
+          <a
+            href="/auth/login"
+            className="text-sm text-gray-600 hover:underline transition"
+          >
+            ¿Ya tienes cuenta? Inicia sesión
+          </a>
+        </div>
+      </div>
+    </div>
+  );
 }

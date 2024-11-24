@@ -1,9 +1,21 @@
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: ["./src/**/*.{html,js,jsx,ts,tsx}"],
+module.exports = {
+  content: ["./src/**/*.{html,js,ts,jsx,tsx}"], // Asegúrate de que esta parte incluye todos los archivos
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        spinIn: {
+          "0%": { transform: "rotate(0deg)", opacity: "0" },
+          "50%": { opacity: "1" },
+          "100%": { transform: "rotate(360deg)", opacity: "1" },
+        },
+      },
+      animation: {
+        spinIn: "spinIn 2s ease-in-out forwards",
+      },
+      colors: {
+        layoutcolor: "#bb9a3b", // Verde militar claro personalizado
+      },
+    },
   },
   plugins: [],
-}
-
+};
