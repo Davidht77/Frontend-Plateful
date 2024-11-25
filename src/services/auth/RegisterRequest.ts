@@ -5,4 +5,5 @@ export interface RegisterRequest {
     phone: String;
     date: string;
     category: String;
+    location?: { lat: number; lng: number } | null;
 }
