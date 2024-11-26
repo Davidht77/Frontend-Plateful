@@ -25,7 +25,7 @@ export function RegisterPage() {
       phone: phone,
       date: date,
       category: category,
-      location: category === "RESTAURANTE" ? location : null,
+      ubicacion: category === "PROPIETARIO" ? location : null,
     };
     await signUp(registroInfo);
     console.log("Registro exitoso");
@@ -132,15 +132,15 @@ export function RegisterPage() {
               <label className="flex items-center text-gray-700">
                 <input
                   type="radio"
-                  value="RESTAURANTE"
-                  checked={category === "RESTAURANTE"}
+                  value="PROPIETARIO"
+                  checked={category === "PROPIETARIO"}
                   onChange={(e) => setCategory(e.target.value)}
                   className="mr-2"
                 />
                 Restaurante
               </label>
             </div>
-            {category === "RESTAURANTE" && (
+            {category === "PROPIETARIO" && (
               <div className="mt-4">
                 <h3 className="text-gray-700 font-medium mb-2">Selecciona la ubicación de tu restaurante:</h3>
                 <GoogleMapComponent onLocationSelect={(coords) => setLocation(coords)} />
