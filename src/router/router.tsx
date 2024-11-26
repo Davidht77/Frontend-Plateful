@@ -3,6 +3,7 @@ import LoginPage, {  } from "../pages/LoginPage";
 import { RegisterPage } from "../pages/RegisterPage";
 import '../output.css';
 import { HomePage } from "../pages/HomePage";
+import ViewRestaurants from "../pages/ViewRestaurants";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "home",
     element: <HomePage />,
+  },
+  {
+    path: "restaurants",
+    element: <ViewRestaurants/>,
   },
   ]);
   

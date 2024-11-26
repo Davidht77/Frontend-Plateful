@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-import axios from "axios";
+import { getRestaurantes } from "../services/api";
 
 const containerStyle = {
   width: "100%",
@@ -12,7 +12,7 @@ const defaultCenter = {
   lng: -77.0428,
 };
 
-interface Restaurant {
+export interface Restaurant {
   id_restaurante: number;
   nombre_restaurante: string;
   latitude: number;
@@ -26,8 +26,8 @@ const ViewRestaurants: React.FC = () => {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/restaurantes"); // Cambia la URL si tu backend tiene otro dominio o puerto
-        setRestaurants(response.data);
+        const response = await getRestaurantes();
+        setRestaurants(response);
       } catch (error) {
         console.error("Error al obtener los restaurantes:", error);
       }
@@ -43,7 +43,6 @@ const ViewRestaurants: React.FC = () => {
         center={defaultCenter}
         zoom={12}
       >
-        {/* Mostrar marcadores para cada restaurante */}
         {restaurants.map((restaurant) => (
           <Marker
             key={restaurant.id_restaurante}

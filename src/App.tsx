@@ -19,7 +19,6 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Ruta principal (Splash screen o inicio) */}
         <Route
           path="/"
           element={
