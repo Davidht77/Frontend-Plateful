@@ -3,8 +3,9 @@ import { jwtDecode } from 'jwt-decode';
 import { RegisterRequest } from "./auth/RegisterRequest";
 import { LoginRequest } from "./auth/LoginRequest";
 import { Restaurant } from "../pages/ViewRestaurants";
-const BACKEND_URL ="http://44.192.120.217:8080";
-//const BACKEND_URL = "http://34.204.172.124:8080";
+
+//const BACKEND_URL ="http://localhost:8080";
+const BACKEND_URL = "http://44.192.120.217:8080";
 
 export const getRole = () => {
     const token = localStorage.getItem('token');
