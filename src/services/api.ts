@@ -3,7 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 import { RegisterRequest } from "./auth/RegisterRequest";
 import { LoginRequest } from "./auth/LoginRequest";
 import { Restaurant } from "../pages/ViewRestaurants";
-const BACKEND_URL ="http://localhost:8080";
+const BACKEND_URL ="http://44.192.120.217:8080";
 //const BACKEND_URL = "http://34.204.172.124:8080";
 
 export const getRole = () => {
@@ -45,6 +45,7 @@ try {
 
 export const signUp = async(data: RegisterRequest)=> {
         try{
+                localStorage.removeItem('token');
                 const response = await axios.post(BACKEND_URL+'/auth/register', data);
                 const token = response.data.token;
                 console.log(response);
