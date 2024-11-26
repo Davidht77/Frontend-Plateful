@@ -4,7 +4,7 @@ import { RegisterRequest } from "./auth/RegisterRequest";
 import { LoginRequest } from "./auth/LoginRequest";
 import { Restaurant } from "../pages/ViewRestaurants";
 //const BACKEND_URL ="http://localhost:8080";
-const BACKEND_URL = "http://98.80.65.185:8080";
+const BACKEND_URL = "http://54.234.219.62:8080";
 
 export const getRole = () => {
     const token = localStorage.getItem('token');
