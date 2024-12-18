@@ -2,26 +2,29 @@ import axios from "axios";
 import { jwtDecode } from 'jwt-decode';
 import { RegisterRequest } from "./auth/RegisterRequest";
 import { LoginRequest } from "./auth/LoginRequest";
-import { Restaurant } from "../pages/ViewRestaurants";
+import { JwtPayload } from "./JWT/JwtInterface";
+import { Restaurant } from "./restaurante/RestauranteResponse";
 
-//const BACKEND_URL ="http://localhost:8080";
-const BACKEND_URL = "http://44.192.120.217:8080";
+const BACKEND_URL ="http://localhost:8080";
 
 export const getRole = () => {
     const token = localStorage.getItem('token');
     if(token !== null){
-            const decodedToken = jwtDecode(token);
-            return decodedToken;
+            const decodedToken = jwtDecode<JwtPayload>(token);
+            return decodedToken.role;
     }
   }
 
-  export const getRestaurantes = async (): Promise<Restaurant[]> =>{
+  export const getRestaurantes = async (page: number, limit:number): Promise<Restaurant[]> =>{
         try{    
                 const token = localStorage.getItem('token');
                 const config = {
                 headers: {
                         Authorization: `Bearer ${token}`,
                 },
+                params:{
+                        page, limit
+                }
                 };
                 const response = await axios.get(BACKEND_URL+'/restaurantes',config)
                 console.log(response.data);

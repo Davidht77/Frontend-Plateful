@@ -4,6 +4,7 @@ import { RegisterPage } from "../pages/RegisterPage";
 import '../output.css';
 import { HomePage } from "../pages/HomePage";
 import ViewRestaurants from "../pages/ViewRestaurants";
+import MapComponent from "../pages/new";
 
 const router = createBrowserRouter([
   {

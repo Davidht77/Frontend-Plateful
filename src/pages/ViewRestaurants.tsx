@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { getRestaurantes } from "../services/api";
+import { Restaurant } from "../services/restaurante/RestauranteResponse";
 
 const containerStyle = {
   width: "100%",
-  height: "600px",
+  height: "400px",
 };
 
 const defaultCenter = {
@@ -12,21 +13,30 @@ const defaultCenter = {
   lng: -77.0428,
 };
 
-export interface Restaurant {
-  id_restaurante: number;
-  nombre_restaurante: string;
-  latitude: number;
-  longitude: number;
-}
-
 const ViewRestaurants: React.FC = () => {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const [page, setPage] = useState(1);
+  const limit = 10;
+
+  const handleLoad = () => {
+    setMapLoaded(true); // Solo carga el mapa cuando todo está listo
+  };
+
+  const handleNext = () =>{
+    setPage(page+limit);
+  }
+  
+  const handleBefore = () =>{
+    if(page>limit)
+      setPage(page-limit);
+    }
 
   // Obtener la lista de restaurantes desde el backend
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const response = await getRestaurantes();
+        const response = await getRestaurantes(page,limit);
         setRestaurants(response);
       } catch (error) {
         console.error("Error al obtener los restaurantes:", error);
@@ -34,28 +44,31 @@ const ViewRestaurants: React.FC = () => {
     };
 
     fetchRestaurants();
-  }, []);
+  }, [page]);
 
-  return (
-    <LoadScript googleMapsApiKey="AIzaSyA6dBWhlgBBJzPAV4WIfLnrr3JSzX8Uyug"> {/* Reemplaza con tu API key */}
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={defaultCenter}
-        zoom={12}
-      >
-        {restaurants.map((restaurant) => (
-          <Marker
-            key={restaurant.id_restaurante}
-            position={{
-              lat: restaurant.latitude,
-              lng: restaurant.longitude,
-            }}
-            title={restaurant.nombre_restaurante}
-          />
-        ))}
-      </GoogleMap>
-    </LoadScript>
-  );
+
+  return(
+    <div className="flex flex-col items-center justify-center h-screen w-screen">
+     <h2 className="text-2xl">Todos los Animes</h2>
+     <div className="max-w-md mx-auto justify-items-center">
+         {restaurants.map((restaurant)=>(
+             <div key={restaurant.id} className="justify-items-center mt-2 mb-2 bg-amber-300 rounded-lg">
+                 <h3 className="font-bold self-center">{restaurant.nombre_restaurante}</h3>
+                 <div className="mb-4 mt-4">
+                     <button className="bg-blue-400 justify-items-center rounded-full">Agregar a favorito</button>
+                     <button className="bg-red-500 justify-items-center rounded-full"> Eliminar de Favorito</button>
+                 </div>
+             </div>
+         ))}
+     </div>
+     <button onClick={handleBefore}>
+         Atras
+     </button>
+     <button onClick={handleNext}>
+         Adelante
+     </button>
+    </div> 
+ );
 };
 
 export default ViewRestaurants;
